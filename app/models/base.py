@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, Numeric, Boolean, DateTime, ForeignKey, Text, ARRAY, text
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import DeclarativeBase, relationship
+from pgvector.sqlalchemy import Vector
 from datetime import datetime
 import uuid
 
@@ -51,6 +52,7 @@ class Product(Base):
     category = Column(String)
     unit = Column(String, default="caixa")
     pack_size = Column(Integer)
+    embedding = Column(Vector(512))  # text-embedding-3-small @ 512 dims
     created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
     updated_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
 
@@ -65,6 +67,7 @@ class ProductAlias(Base):
     supplier_code = Column(String)
     source = Column(String, default="manual")
     confirmed = Column(Boolean, default=False)
+    embedding = Column(Vector(512))  # text-embedding-3-small @ 512 dims
     created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
 
 class PriceRecord(Base):
